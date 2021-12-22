@@ -1,0 +1,27 @@
+# Use root/example as user/password credentials
+version: '3'
+
+services:
+  ehub-express:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mongo_dbs_be
+    container_name: mongo_dbs_be
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      - mongodb
+    ports:
+      - "${HTTP_PORT}:${HTTP_PORT}"
+    command: node ./src/mongo_dbs.js
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
