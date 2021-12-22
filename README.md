@@ -216,7 +216,7 @@ mongodump --uri mongodb://root:example@mongodb:27017/ --archive > /tmp/mongo.dum
 
 ## Docker compose to Azure
 
-###Create an Azure context for Docker
+### Create an Azure context for Docker
 
 To use Docker commands to run containers in Azure Container Instances, first log into Azure and then create an azure context:
 ```sh
