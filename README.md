@@ -30,6 +30,7 @@ The MONGO_DBS architecture is based on a mongodb server that is used by a nodejs
 In order to support this application we have two different docker containers, one for database layer and another one for the appication.
 
 For more details please see the diagram in "architecture.svg"
+
 ![architecture](architecture.svg)
 
 In order to setup this kind of infrastructure we use docker compose, defining the a multi-containers application
