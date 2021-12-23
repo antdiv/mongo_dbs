@@ -190,7 +190,7 @@ The environment variables HTTP_PORT and MONGO_URI give us the possibility to man
 The following property in docker_compose "restart: always" allow the container to be restarted when the service goes down invoking the following service http://hostname_web:port/STOP
 
 
-### Database backup 
+## Database backup 
 In order to have an automated backup we define an additional docker compose file that will manage this kind of operation.
 So please create a docker-compose-backup.yml with the following content
 
