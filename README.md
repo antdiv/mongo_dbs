@@ -191,7 +191,7 @@ The following property in docker_compose "restart: always" allow the container t
 
 
 ## Database backup 
-In order to have an automated backup we define an additional docker compose file that will manage this kind of operation.
+In order to have an automated backup we define an additional docker compose file that will manage this kind of operation: it will connect to mongodb container and save the dump.archive in tmp folder.
 So please create a docker-compose-backup.yml with the following content
 
 ```sh
@@ -216,6 +216,12 @@ Then run the command:
 ```sh
 docker-compose -f docker-compose-backup.yml run mongodb_backup
 ```
+with the following success logs:
+```sh
+ writing admin.system.users to archive '/tmp/dump.archive'
+ ...
+```
+
 This command can be executed with a cron expression at defined time interval
 
 The same functionality can be implemented with the following command
