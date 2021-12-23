@@ -44,6 +44,13 @@ docker -v
 ```
 You should get a version number if you have Docker installed.
 
+You need to have Docker Compose installed.
+To check if you have Docker Compose installed, open your Command Line and run the following code
+```sh
+docker-compose -v
+```
+You should get a version number if you have Docker Compose  installed.
+
 ### Technology stack
 
 Mongo_dbs uses the following open source projects to work properly:
@@ -51,11 +58,11 @@ Mongo_dbs uses the following open source projects to work properly:
 - [node.js] - evented I/O for the backend
 - [Express] - fast node.js network app framework [@tjholowaychuk]
 - [MongoDB driver] - MongoDB Node Driver
-- [MONGO DB] - source-available cross-platform document-oriented database program
+- [MONGO DB] - cross-platform document-oriented database program
 
 ## Database Setup
 
-For the database layer we need a mongodb image, so for this purpose it's possible to use the official mongodb docker image. 
+For the database layer a mongodb image is needed, so for this purpose it's possible to use the official mongodb docker image. 
 In our docker-compose.yml we use it and set up the ports and default environment variables:
 
 ```sh
@@ -72,9 +79,13 @@ In our docker-compose.yml we use it and set up the ports and default environment
 
 ## Application Setup
 
-For application service we need to set up an ad-hoc docker image in order to start the nodejs code, mongo_dbs.js, located in /src.
+For application service we need to set up an ad-hoc docker image starting from source code described below:
 
-- in the root of the project we have a package.json file for dependencies definition related to "express framework" and "mongodb driver" as in the following snippet:
+- the nodejs code, mongo_dbs.js, is located in /src.
+
+- a wait.sh script is defined in order to check the db connection availability 
+
+- in the root of the project we have a package.json file that defines "express framework" dependency and "mongodb driver" dependency as in the following snippet:
   
     ```sh
     {
@@ -86,14 +97,14 @@ For application service we need to set up an ad-hoc docker image in order to sta
       }
     }
     ```
-- an .env file with the environemnt variables required: HTTP_PORT and MONGO_URI 
+- the environemnt variables required,HTTP_PORT and MONGO_URI, are defined in ".env" file as follow 
 - 
   ```sh
     HTTP_PORT=3000
     MONGO_URI=mongodb://root:example@mongodb:27017/
   }
   ```
-- define a Dockerfile that enables us to create a docker, starting from node:12-alpine and installing the required dependencies as defined in package.json
+- a Dockerfile allow us to create a docker, starting from node:12-alpine and installing the required dependencies as defined in package.json
   ```sh
     FROM node:12-alpine
     ...
@@ -120,12 +131,12 @@ The application properties are setted using in .env file and the property HTTP_P
     ports:
       - "${HTTP_PORT}:${HTTP_PORT}"
 ```
-The "command" will execute the core of the application and the "depends_on" estabilish that this services needs to be started after "mongodb" container
+The "depends_on" estabilish that this services needs to be started after "mongodb" container, but this is not enough in order to be sure that the application can use the database so in "command" there is a wait.sh script that will check the connection and then it runs the nodejs code
 
 ```sh
     depends_on:
       - mongodb
-    command: node ./src/mongo_dbs.js
+   command: ./wait.sh mongodb:27017 -- node ./src/mongo_dbs.js
 ```
 
 The restart config are used in order to have the container restart when the STOP operation is executed
