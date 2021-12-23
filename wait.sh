@@ -20,6 +20,7 @@ USAGE
 }
 
 wait_for() {
+  echo "wait db up"
   for i in `seq $TIMEOUT` ; do
     nc -z "$HOST" "$PORT" > /dev/null 2>&1
 
