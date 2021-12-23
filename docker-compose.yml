@@ -14,8 +14,8 @@ services:
       - mongodb
     ports:
       - "${HTTP_PORT}:${HTTP_PORT}"
-    command: node ./src/mongo_dbs.js
-
+    command: ./wait.sh mongodb:27017 -- node ./src/mongo_dbs.js
+ #  ./wait.sh mongodb:27017 --
   mongodb:
     image: mongo
     container_name: mongodb
